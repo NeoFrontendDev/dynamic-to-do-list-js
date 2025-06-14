@@ -1,16 +1,41 @@
-document.addEventListener("DOMContentLoaded", () => {
-    // Select key elements
-    const addButton = document.getElementById("add-task-btn");
-    const taskInput = document.getElementById("task-input");
-    const taskList = document.getElementById("task-list");
+document.addEventListener("DOMContentLoaded", function () {
+      const addButton = document.getElementById("add-task-btn");
+      const taskInput = document.getElementById("task-input");
+      const taskList = document.getElementById("task-list");
 
-    // Add functionality (example: adding tasks)
-    addButton.addEventListener("click", () => {
-        if (taskInput.value.trim() !== "") {
-            const listItem = document.createElement("li");
-            listItem.textContent = taskInput.value;
-            taskList.appendChild(listItem);
-            taskInput.value = ""; // Clear input after adding task
+      function addTask() {
+        const taskText = taskInput.value.trim();
+
+        if (taskText === "") {
+          alert("Please enter a task.");
+          return;
         }
+
+        const li = document.createElement("li");
+        li.textContent = taskText;
+
+        const removeButton = document.createElement("button");
+        removeButton.textContent = "Remove";
+        removeButton.className = "remove-btn";
+
+        removeButton.onclick = function () {
+          taskList.removeChild(li);
+        };
+
+        li.appendChild(removeButton);
+        taskList.appendChild(li);
+
+        taskInput.value = "";
+      }
+
+      // Attach event listeners
+      addButton.addEventListener("click", addTask);
+      taskInput.addEventListener("keypress", function (event) {
+        if (event.key === 'Enter') {
+          addTask();
+        }
+      });
+
+      // Optionally invoke addTask on page load (not required here unless you want to load default tasks)
+      // addTask(); // Uncomment if needed
     });
-});
